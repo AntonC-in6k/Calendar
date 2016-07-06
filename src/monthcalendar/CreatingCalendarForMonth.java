@@ -1,4 +1,4 @@
-/**
+package monthcalendar; /**
  * Created by Mr_Blame on 03.06.2016.
  */
 
@@ -73,7 +73,7 @@ public class CreatingCalendarForMonth {
         return result;
     }
 
-    private int setMonthForCalendar() {
+    public int setMonthForCalendar() {
         int month = 0;
         if (parameterForTable > 0 && parameterForTable <= 12) {
             month = parameterForTable;
