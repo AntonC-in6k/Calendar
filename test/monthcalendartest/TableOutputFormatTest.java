@@ -17,6 +17,15 @@ public class TableOutputFormatTest {
 
     private  String[] parameter;
 
+
+    @Test
+    public void firstDayInOutput(){
+        parameter = new String[]{"-m=7"};
+        CreatingCalendarForMonth creatingCalendarForMonth= new CreatingCalendarForMonth(parameter);
+        String firstDay = "MON";
+        assertThat(creatingCalendarForMonth.createDaysTitle().toArray()[0],is(firstDay));
+    }
+
     @Test
     public void tableOutputTitleTest(){
         parameter = new String[]{"-m=7"};
