@@ -19,8 +19,8 @@ public class CreatingCalendarForMonth {
     private ArrayList<Integer> calendarData;
     private int currentDayTrack;
     public static final String COLOR_RESET = "\u001B[0m";
-    public static final String YELLOW_COLOR = "\u001B[33m";
-    public static final String BLUE_COLOR = "\u001B[34m";
+    public static final String COLOR_FOR_WEEKENDS = "\u001B[33m";
+    public static final String COLOR_FOR_CURRENT_DAY = "\u001B[34m";
     public static final int daysInWeak = 7;
 
     public CreatingCalendarForMonth(String[] parameter) {
@@ -41,6 +41,10 @@ public class CreatingCalendarForMonth {
 
     public ArrayList<Integer> getCalendarData() {
         return calendarData;
+    }
+
+    public int getMonthForCalendar(){
+        return monthForCalendar;
     }
 
     public boolean getTrackOfCurrentDay() {
@@ -113,14 +117,13 @@ public class CreatingCalendarForMonth {
 
     }
 
-    public LocalDate getDateByMonth() {
-        int year = Year.now().getValue();
-        LocalDate result = LocalDate.of(year, monthForCalendar, 1);
+    public LocalDate getDateByMonth(int month, int year) {
+        LocalDate result = LocalDate.of(year, month, 1);
         return result;
     }
 
     public int getNumberOfDays() {
-        int result = getDateByMonth().lengthOfMonth();
+        int result = getDateByMonth(monthForCalendar,2016).lengthOfMonth();
         return result;
     }
 
@@ -149,29 +152,31 @@ public class CreatingCalendarForMonth {
         return result;
     }
 
-    public String createMonthTitle() {
-        String result = getDateByMonth().getMonth().toString()+" "+Year.now();
+    public String createMonthTitle(int month, int year) {
+        String result = getDateByMonth(month, year).getMonth().toString()+" "+Year.now();
         return result;
     }
 
-    public String setColorForPrinting(int i) {
+    public String setColorForPrinting(int i, int currentDay) {
 
         String result = COLOR_RESET;
         if ((i + 1) % daysInWeak == 0 || (i + 2) % daysInWeak == 0) {
-            result = YELLOW_COLOR;
+            result = COLOR_FOR_WEEKENDS;
         }
 
-        if (calendarData.get(i) == currentDayTrack) {
-            result = BLUE_COLOR;
+        if (calendarData.get(i) == currentDay) {
+            result = COLOR_FOR_CURRENT_DAY;
         }
 
         return result;
     }
 
-    public void gotoNewLineInTable(int i) {
+    public boolean gotoNewLineInTable(int i) {
         if ((calendarData.get(i) + getShiftForDaysInTable()) % daysInWeak == 0) {
-            System.out.println();
-
+            return true;
         }
+        return false;
     }
+
+
 }

@@ -2,6 +2,7 @@ package monthcalendar; /**
  * Created by Mr_Blame on 04.06.2016.
  */
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -17,49 +18,63 @@ public class Calendar {
 
     }
 
-    public void showTitleForMonth() {
-        System.out.print(creatingCalendarForMonth.YELLOW_COLOR);
-        System.out.printf("%35s", creatingCalendarForMonth.createMonthTitle());
-        System.out.println(creatingCalendarForMonth.COLOR_RESET);
+
+    public StringBuilder createStringLineForMonthTitle(int month, int year){
+        StringBuilder result = new StringBuilder();
+        result.append(creatingCalendarForMonth.COLOR_FOR_WEEKENDS);
+        result.append(String.format("%35s", creatingCalendarForMonth.createMonthTitle(month, year)));
+        result.append(creatingCalendarForMonth.COLOR_RESET);
+        return result;
     }
 
-    public void showTitleForDays() {
+    public StringBuilder createStringLineForDaysTitle(){
+        StringBuilder result = new StringBuilder();
         for (String day :
                 titleForCalendarDays) {
             if (day == titleForCalendarDays.get(5)) {
-                System.out.print(creatingCalendarForMonth.YELLOW_COLOR);
+                result.append(creatingCalendarForMonth.COLOR_FOR_WEEKENDS);
             }
-            System.out.printf("%5s", day);
+            result.append(String.format("%5s", day));
         }
-        System.out.println(creatingCalendarForMonth.COLOR_RESET);
+        return result;
     }
 
-    public void showCalendar() {
-
+    public StringBuilder createStringLineForCalendarData(ArrayList<Integer> data, int currentDay){
         String emptySpace = "";
         String colorForPrinting;
+        StringBuilder result = new StringBuilder();
 
-        showTitleForMonth();
-        showTitleForDays();
+        for (int i = 0; i < data.size(); i++) {
 
+            colorForPrinting = creatingCalendarForMonth.setColorForPrinting(i,currentDay);
 
-        for (int i = 0; i < creatingCalendarForMonth.getCalendarData().size(); i++) {
-
-            colorForPrinting = creatingCalendarForMonth.setColorForPrinting(i);
-
-            System.out.print(colorForPrinting);
-
-            if (creatingCalendarForMonth.getCalendarData().get(i) == 0) {
-                System.out.printf("%5s", emptySpace);
-            } else {
-                System.out.printf("%5d", creatingCalendarForMonth.getCalendarData().get(i));
+            if (colorForPrinting!=creatingCalendarForMonth.COLOR_RESET){
+                result.append(colorForPrinting);
             }
 
-            System.out.print(creatingCalendarForMonth.COLOR_RESET);
+            if (data.get(i) == 0) {
+                result.append(String.format("%5s",emptySpace));
+            } else {
+                result.append(String.format("%5d", creatingCalendarForMonth.getCalendarData().get(i)));
+            }
 
-            creatingCalendarForMonth.gotoNewLineInTable(i);
+            result.append(creatingCalendarForMonth.COLOR_RESET);
+
+            if(creatingCalendarForMonth.gotoNewLineInTable(i)==true){
+                result.append("\n");
+            }
         }
 
+        return result;
     }
+
+    public void showCalendar(){
+        LocalDate date = LocalDate.now();
+        int currentDay = date.getDayOfMonth();
+        System.out.println(createStringLineForMonthTitle(creatingCalendarForMonth.getMonthForCalendar(),2016));
+        System.out.println(createStringLineForDaysTitle());
+        System.out.println(createStringLineForCalendarData(creatingCalendarForMonth.getCalendarData(),currentDay));
+    }
+
 
 }
