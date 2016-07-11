@@ -1,14 +1,9 @@
 package monthcalendartest;
 
-import monthcalendar.Calendar;
 import monthcalendar.CreatingCalendarForMonth;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDate;
-import java.time.Year;
-
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class TableDataTest {

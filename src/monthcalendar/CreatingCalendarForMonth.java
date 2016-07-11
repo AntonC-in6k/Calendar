@@ -13,18 +13,14 @@ public class CreatingCalendarForMonth {
     private int daysInMonth;
     private int monthForCalendar;
     private int parameterForTable;
+    private int yearForCalendar;
     private DayOfWeek firstDayInMonth;
     private int shiftForDaysInTable;
     private boolean trackOfCurrentDay;
     private ArrayList<Integer> calendarData;
     private int currentDayTrack;
-    public static final String COLOR_RESET = "\u001B[0m";
-    public static final String COLOR_FOR_WEEKENDS = "\u001B[33m";
-    public static final String COLOR_FOR_CURRENT_DAY = "\u001B[34m";
-    public static final int daysInWeak = 7;
 
     public CreatingCalendarForMonth(String[] parameter) {
-
         trackOfCurrentDay = false;
         parameterForTable = parseParameterForCalendar(processParameterForCalendar(parameter));
         monthForCalendar = setMonthForCalendar();
@@ -32,6 +28,7 @@ public class CreatingCalendarForMonth {
         firstDayInMonth = getFirstDayInMonth();
         shiftForDaysInTable = getShiftForDaysInTable();
         calendarData = createDateTable();
+        yearForCalendar = 2016;
         if (getTrackOfCurrentDay() == true) {
             currentDayTrack = getCurrentDay();
         } else {
@@ -39,20 +36,11 @@ public class CreatingCalendarForMonth {
         }
     }
 
-    public ArrayList<Integer> getCalendarData() {
-        return calendarData;
-    }
-
-    public int getMonthForCalendar(){
-        return monthForCalendar;
-    }
-
     public boolean getTrackOfCurrentDay() {
         return trackOfCurrentDay;
     }
 
     public String processParameterForCalendar(String[] parameter) {
-
         String result = "";
         if (parameter.length == 0) {
             return (getCurrentMonth() + "");
@@ -109,12 +97,9 @@ public class CreatingCalendarForMonth {
     }
 
     public DayOfWeek getFirstDayInMonth() {
-
-        int year = Year.now().getValue();
-        LocalDate date = LocalDate.of(year, monthForCalendar, 1);
+        LocalDate date = LocalDate.of(yearForCalendar, monthForCalendar, 1);
         DayOfWeek result = date.getDayOfWeek();
         return result;
-
     }
 
     public LocalDate getDateByMonth(int month, int year) {
@@ -123,7 +108,7 @@ public class CreatingCalendarForMonth {
     }
 
     public int getNumberOfDays() {
-        int result = getDateByMonth(monthForCalendar,2016).lengthOfMonth();
+        int result = getDateByMonth(monthForCalendar, yearForCalendar).lengthOfMonth();
         return result;
     }
 
@@ -144,39 +129,11 @@ public class CreatingCalendarForMonth {
         return result;
     }
 
-    public ArrayList<String> createDaysTitle() {
-        ArrayList<String> result = new ArrayList<String>();
-        for (int i = 1; i <= daysInWeak; i++) {
-            result.add(i - 1, DayOfWeek.of(i).toString().substring(0, 3));
-        }
+    public LocalDate getDateForView() {
+        LocalDate result = LocalDate.of(yearForCalendar, monthForCalendar, currentDayTrack);
         return result;
     }
-
-    public String createMonthTitle(int month, int year) {
-        String result = getDateByMonth(month, year).getMonth().toString()+" "+Year.now();
-        return result;
-    }
-
-    public String setColorForPrinting(int i, int currentDay) {
-
-        String result = COLOR_RESET;
-        if ((i + 1) % daysInWeak == 0 || (i + 2) % daysInWeak == 0) {
-            result = COLOR_FOR_WEEKENDS;
-        }
-
-        if (calendarData.get(i) == currentDay) {
-            result = COLOR_FOR_CURRENT_DAY;
-        }
-
-        return result;
-    }
-
-    public boolean gotoNewLineInTable(int i) {
-        if ((calendarData.get(i) + getShiftForDaysInTable()) % daysInWeak == 0) {
-            return true;
-        }
-        return false;
-    }
-
-
 }
+
+
+
