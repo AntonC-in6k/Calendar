@@ -40,7 +40,7 @@ public class TableOutputFormatTest {
     }
 
     @Test
-    public void tableOutputTitleTest() {
+    public void tableOutputTitle() {
 
         String[] daysTitle = new String[]{"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
         String title = calendar.createStringLineForDaysTitle().toString().trim();
@@ -51,7 +51,7 @@ public class TableOutputFormatTest {
     }
 
     @Test
-    public void tableOutputMonthTitleTest() {
+    public void tableOutputMonthTitle() {
         String outputLine;
         String expectedMonthAndYear = "JULY 2016";
         int month = 7;
@@ -63,34 +63,32 @@ public class TableOutputFormatTest {
     }
 
     @Test
-    public void tableOutputFormatTest() {
+    public void tableOutputFormat() {
         int numberOfDaysInWeek = 7;
-        int currentDay = 11;
-
-        int firstDayOfWeekInMonth = 5;
+        int currentDay = 12;
+        int daysFromThisMonthInFirstWeek = 3;
 
         String line = calendar.createStringLineForCalendarData(getTableForJulyMonth(), currentDay).toString();
-        assertThat(line, allOf(containsString("\n    " + (numberOfDaysInWeek - firstDayOfWeekInMonth + 1)),
-                containsString("\n   " + (numberOfDaysInWeek * 2 - firstDayOfWeekInMonth + 1)),
-                containsString("\n   " + (numberOfDaysInWeek * 3 - firstDayOfWeekInMonth + 1)),
-                containsString("\n   " + (numberOfDaysInWeek * 4 - firstDayOfWeekInMonth + 1))));
-
+        assertThat(line, allOf(containsString("\n    " + (numberOfDaysInWeek - daysFromThisMonthInFirstWeek)),
+                containsString("\n   " + (numberOfDaysInWeek*2 - daysFromThisMonthInFirstWeek)),
+                containsString("\n   " + (numberOfDaysInWeek*3 - daysFromThisMonthInFirstWeek)),
+                containsString("\n   " + (numberOfDaysInWeek*4 - daysFromThisMonthInFirstWeek))));
     }
 
     @Test
-    public void anotherColorForWeekendTest() {
+    public void anotherColorForWeekend() {
         int numberOfDaysInWeek = 7;
         int currentDay = 11;
-
         int firstDayOfWeekInMonth = 5;
+
         String line = calendar.createStringLineForCalendarData(getTableForJulyMonth(), currentDay).toString();
         assertThat(line, allOf(
-                containsString(Calendar.COLOR_FOR_WEEKENDS + "    " + (numberOfDaysInWeek - firstDayOfWeekInMonth - 1)),
-                containsString(Calendar.COLOR_FOR_WEEKENDS + "    " + (numberOfDaysInWeek - firstDayOfWeekInMonth))));
+                containsString(Calendar.COLOR_FOR_WEEKENDS + "    " + (numberOfDaysInWeek - firstDayOfWeekInMonth)),
+                containsString(Calendar.COLOR_FOR_WEEKENDS + "    " + (numberOfDaysInWeek - firstDayOfWeekInMonth+1))));
     }
 
     @Test
-    public void currentDayColorTest() {
+    public void currentDayColor() {
 
         int currentDay = 14;
         String line = calendar.createStringLineForCalendarData(getTableForJulyMonth(), currentDay).toString();
@@ -98,11 +96,4 @@ public class TableOutputFormatTest {
 
     }
 
-    @Test
-    public void checkOnlyOneMonthOutputTest() {
-        int currentDay = 7;
-        int primaryTabs = 40;
-        String line = calendar.createStringLineForCalendarData(getTableForJulyMonth(), currentDay).toString();
-        assertThat(line.substring(1,primaryTabs), both(startsWith("")).and(endsWith("")));
-    }
 }
