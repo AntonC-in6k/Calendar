@@ -66,7 +66,7 @@ public class Calendar {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < data.size(); i++) {
-            colorForPrinting = setColorForPrinting(i, data.get(i), currentDay);
+            colorForPrinting = chooseColorForPrinting(i, data.get(i), currentDay);
             if (colorForPrinting != COLOR_RESET) {
                 result.append(colorForPrinting);
             }
@@ -83,7 +83,7 @@ public class Calendar {
         return result;
     }
 
-    public String setColorForPrinting(int indexOfDay, int valueOfDay, int dayForTracking) {
+    public String chooseColorForPrinting(int indexOfDay, int valueOfDay, int dayForTracking) {
         String result = COLOR_RESET;
         if ((indexOfDay + 1) % daysInWeak == 0 || (indexOfDay) % daysInWeak == 0) {
             result = COLOR_FOR_WEEKENDS;

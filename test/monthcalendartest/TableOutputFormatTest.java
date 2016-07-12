@@ -67,6 +67,7 @@ public class TableOutputFormatTest {
         int numberOfDaysInWeek = 7;
         int currentDay = 12;
         int daysFromThisMonthInFirstWeek = 3;
+        int[] mondayDayIndex={4,};
 
         String line = calendar.createStringLineForCalendarData(getTableForJulyMonth(), currentDay).toString();
         assertThat(line, allOf(containsString("\n    " + (numberOfDaysInWeek - daysFromThisMonthInFirstWeek)),

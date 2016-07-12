@@ -7,7 +7,8 @@ package monthcalendar;
 public class Main {
     public static void
     main(String[] args) {
-        CreatingCalendarForMonth calendarForMonth = new CreatingCalendarForMonth(args);
+        String[] parameter = new String[]{"-m=5","-y=2016","-o=html"};
+        CreatingCalendarForMonth calendarForMonth = new CreatingCalendarForMonth(parameter);
         Calendar calendar = new Calendar(calendarForMonth.createDateTable(),calendarForMonth.getDateForView()); //My program gets parameter in format -m= *, where m - month
         calendar.showCalendar();
         System.exit(0);
