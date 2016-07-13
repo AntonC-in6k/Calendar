@@ -36,7 +36,7 @@ public class Calendar {
         return month == LocalDate.now().getMonthValue() && year == LocalDate.now().getYear();
     }
 
-    private StringBuilder createStringLineForMonthTitle(int month, int year) {
+    protected StringBuilder createStringLineForMonthTitle(int month, int year) {
         StringBuilder result = new StringBuilder();
         result.append(COLOR_FOR_WEEKENDS);
         result.append(String.format("%35s", createMonthTitle(month, year)));
@@ -51,7 +51,7 @@ public class Calendar {
         return result;
     }
 
-    private StringBuilder createStringLineForDaysTitle() {
+    protected StringBuilder createStringLineForDaysTitle() {
         StringBuilder result = new StringBuilder();
         ArrayList<String> daysTitle = createDaysTitle();
         for (String day :
@@ -72,7 +72,7 @@ public class Calendar {
         return result;
     }
 
-    private StringBuilder createStringLineForCalendarData(ArrayList<Integer> data) {
+    protected StringBuilder createStringLineForCalendarData(ArrayList<Integer> data) {
         String emptySpace = "";
         String colorForPrinting;
         StringBuilder result = new StringBuilder();

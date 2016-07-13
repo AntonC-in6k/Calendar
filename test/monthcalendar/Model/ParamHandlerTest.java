@@ -1,10 +1,9 @@
-package monthcalendartest;
+package monthcalendar.Model;
 
 /**
  * Created by employee on 7/12/16.
  */
 
-import monthcalendar.Model.ParamHandler;
 import org.junit.Test;
 
 import java.time.LocalDate;
