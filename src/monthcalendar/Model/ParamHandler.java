@@ -1,4 +1,4 @@
-package monthcalendar;
+package monthcalendar.Model;
 
 import java.time.LocalDate;
 

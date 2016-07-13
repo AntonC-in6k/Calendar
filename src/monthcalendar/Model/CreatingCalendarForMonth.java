@@ -1,4 +1,4 @@
-package monthcalendar; /**
+package monthcalendar.Model; /**
  * Created by Mr_Blame on 03.06.2016.
  */
 
@@ -15,7 +15,6 @@ public class CreatingCalendarForMonth {
     private DayOfWeek firstDayInMonth;
     private int shiftForDaysInTable;
     private ArrayList<Integer> calendarData;
-    private int currentDayTrack;
     private ParamHandler paramHandler;
 
     public CreatingCalendarForMonth(String[] parameter) {
@@ -26,70 +25,49 @@ public class CreatingCalendarForMonth {
         firstDayInMonth = getFirstDayInMonth();
         shiftForDaysInTable = getShiftForDaysInTable();
         calendarData = createDateTable();
-        if (trackOfCurrentDay() == true) {
-            currentDayTrack = getCurrentDay();
-        } else {
-            currentDayTrack = -1;
-        }
     }
 
-    private boolean trackOfCurrentDay() {
-        if (monthForCalendar == getCurrentMonth() || yearForCalendar == LocalDate.now().getYear()) {
-            return true;
-        }
-        return false;
+    public ArrayList<Integer> getCalendarData() {
+        return calendarData;
     }
 
-    public int getCurrentDay() {
-        LocalDate date = LocalDate.now();
-        int day = date.getDayOfMonth();
-        return day;
-    }
-
-    public int getCurrentMonth() {
-        LocalDate date = LocalDate.now();
-        Month month = date.getMonth();
-        int thisMonth = month.getValue();
-        return thisMonth;
-    }
-
-    public DayOfWeek getFirstDayInMonth() {
+    private DayOfWeek getFirstDayInMonth() {
         LocalDate date = LocalDate.of(yearForCalendar, monthForCalendar, 1);
         DayOfWeek result = date.getDayOfWeek();
         return result;
     }
 
-    public LocalDate getDateByMonth(int month, int year) {
-        LocalDate result = LocalDate.of(year, month, 1);
+    private int getNumberOfDays() {
+        int result = getDateByMonth().lengthOfMonth();
         return result;
     }
 
-    public int getNumberOfDays() {
-        int result = getDateByMonth(monthForCalendar, yearForCalendar).lengthOfMonth();
+    private LocalDate getDateByMonth() {
+        LocalDate result = LocalDate.of(yearForCalendar, monthForCalendar, 1);
         return result;
     }
 
-    public int getShiftForDaysInTable() {
-        int result = firstDayInMonth.getValue() - 1;
+    private int getShiftForDaysInTable() {
+        int result = firstDayInMonth.getValue();
         return result;
     }
 
-    public ArrayList<Integer> createDateTable() {
+    private ArrayList<Integer> createDateTable() {
         ArrayList<Integer> result = new ArrayList<Integer>();
-
         for (int i = 0; i < shiftForDaysInTable; i++) {
             result.add(0);
         }
-        for (int i = 0; i < daysInMonth; i++) {
-            result.add(i + 1);
+        for (int i = 1; i <= daysInMonth; i++) {
+            result.add(LocalDate.of(yearForCalendar, monthForCalendar, i).getDayOfMonth());
         }
         return result;
     }
 
     public LocalDate getDateForView() {
-        LocalDate result = LocalDate.of(yearForCalendar, monthForCalendar, currentDayTrack);
+        LocalDate result = LocalDate.of(yearForCalendar, monthForCalendar, LocalDate.now().getDayOfMonth());
         return result;
     }
+
 }
 
 

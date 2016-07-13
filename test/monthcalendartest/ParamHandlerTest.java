@@ -4,7 +4,7 @@ package monthcalendartest;
  * Created by employee on 7/12/16.
  */
 
-import monthcalendar.ParamHandler;
+import monthcalendar.Model.ParamHandler;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -16,7 +16,6 @@ public class ParamHandlerTest {
 
     @Test
     public void emptyParameterForMonth() {
-        String[] parameter = new String[]{};
         ParamHandler paramHandler=new ParamHandler();
         assertThat(paramHandler.getParameterForMonth(null), is(LocalDate.now().getMonthValue()));
     }
