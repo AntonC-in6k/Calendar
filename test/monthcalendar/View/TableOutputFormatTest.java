@@ -1,7 +1,6 @@
 package monthcalendar.View;
 
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -14,11 +13,11 @@ import static org.junit.Assert.assertThat;
 
 public class TableOutputFormatTest {
 
-    private Calendar calendar;
+    private ANSIICalendar ANSIICalendar;
 
     public ArrayList<Integer> getTableForJulyMonth() {
         Integer[] listOfDays = new Integer[]{
-                0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+                0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
                 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
         };
         ArrayList<Integer> result = new ArrayList<Integer>(Arrays.asList(listOfDays));
@@ -27,23 +26,24 @@ public class TableOutputFormatTest {
 
     public void loadCalendarForMonth(int year,int month,int day) {
         LocalDate date = LocalDate.of(year, month, day);
-        calendar = new Calendar(getTableForJulyMonth(), date);
+        ANSIICalendar = new ANSIICalendar(getTableForJulyMonth(), date);
     }
 
     @Test
     public void firstDayInOutput() {
         loadCalendarForMonth(2016, 7, 14);
         String firstDay = "Mon";
-        assertThat(calendar.createStringLineForDaysTitle().toString().trim().substring(0, 3), is(firstDay));
+        assertThat(ANSIICalendar.createOutputFormatDaysTitle().toString().trim().substring(0, 3), is(firstDay));
     }
 
     @Test
     public void tableOutputTitle() {
         loadCalendarForMonth(2016, 7, 14);
         String[] daysTitle = new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-        String title = calendar.createStringLineForDaysTitle().toString().trim();
-        title = title.replace(Calendar.COLOR_FOR_WEEKENDS, "");
+        String title = ANSIICalendar.createOutputFormatDaysTitle().toString().trim();
+        title = title.replace(ANSIICalendar.COLOR_FOR_WEEKENDS, "");
         String[] days = title.split("  ");
+        days[6]=days[6].substring(0,3);
         assertThat(days, is(daysTitle));
     }
 
@@ -54,7 +54,7 @@ public class TableOutputFormatTest {
         String expectedMonthAndYear = "JULY 2016";
         int month = 7;
         int year = 2016;
-        outputLine = calendar.createStringLineForMonthTitle(month, year).toString().substring(5).trim();
+        outputLine = ANSIICalendar.createOutputFormatMonthTitle(month, year).toString().substring(5).trim();
         outputLine = outputLine.substring(0, outputLine.length() - 4);
         assertThat(outputLine, is(expectedMonthAndYear));
     }
@@ -63,7 +63,7 @@ public class TableOutputFormatTest {
     public void tableOutputFormat() {
         loadCalendarForMonth(2016, 7, 14);
         int[] mondayDayIndex = {4, 11, 18, 25};
-        String line = calendar.createStringLineForCalendarData(getTableForJulyMonth()).toString();
+        String line = ANSIICalendar.createOutputFormatCalendarData(getTableForJulyMonth()).toString();
         assertThat(line, allOf(containsString("\n    " + (mondayDayIndex[0])),
                 containsString("\n   " + (mondayDayIndex[1])),
                 containsString("\n   " + (mondayDayIndex[2])),
@@ -74,18 +74,18 @@ public class TableOutputFormatTest {
     public void anotherColorForWeekend() {
         loadCalendarForMonth(2016, 7, 14);
         int[] weekendsDaysIndex = {2, 3};
-        String line = calendar.createStringLineForCalendarData(getTableForJulyMonth()).toString();
+        String line = ANSIICalendar.createOutputFormatCalendarData(getTableForJulyMonth()).toString();
         assertThat(line, allOf(
-                containsString(Calendar.COLOR_FOR_WEEKENDS + "    " + (weekendsDaysIndex[0])),
-                containsString(Calendar.COLOR_FOR_WEEKENDS + "    " + (weekendsDaysIndex[1]))));
+                containsString(ANSIICalendar.COLOR_FOR_WEEKENDS + "    " + (weekendsDaysIndex[0])),
+                containsString(ANSIICalendar.COLOR_FOR_WEEKENDS + "    " + (weekendsDaysIndex[1]))));
     }
 
     @Test
     public void currentDayColor() {
         loadCalendarForMonth(2016, 7, 14);
         int currentDay = 14;
-        String line = calendar.createStringLineForCalendarData(getTableForJulyMonth()).toString();
-        assertThat(line, containsString(Calendar.COLOR_FOR_CURRENT_DAY + "   " + (currentDay)));
+        String line = ANSIICalendar.createOutputFormatCalendarData(getTableForJulyMonth()).toString();
+        assertThat(line, containsString(ANSIICalendar.COLOR_FOR_CURRENT_DAY + "   " + (currentDay)));
     }
 
 }

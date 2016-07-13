@@ -48,7 +48,7 @@ public class CreatingCalendarForMonth {
     }
 
     private int getShiftForDaysInTable() {
-        int result = firstDayInMonth.getValue();
+        int result = firstDayInMonth.getValue()-1;
         return result;
     }
 

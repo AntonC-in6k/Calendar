@@ -1,6 +1,4 @@
-package monthcalendar.View; /**
- * Created by Mr_Blame on 04.06.2016.
- */
+package monthcalendar.View;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -8,8 +6,10 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class Calendar {
-
+/**
+ * Created by employee on 7/13/16.
+ */
+public abstract class Calendar {
     public static final String COLOR_RESET = "\u001B[0m";
     public static final String COLOR_FOR_WEEKENDS = "\u001B[33m";
     public static final String COLOR_FOR_CURRENT_DAY = "\u001B[34m";
@@ -36,14 +36,7 @@ public class Calendar {
         return month == LocalDate.now().getMonthValue() && year == LocalDate.now().getYear();
     }
 
-    protected StringBuilder createStringLineForMonthTitle(int month, int year) {
-        StringBuilder result = new StringBuilder();
-        result.append(COLOR_FOR_WEEKENDS);
-        result.append(String.format("%35s", createMonthTitle(month, year)));
-        result.append(COLOR_RESET);
-        result.append("\n");
-        return result;
-    }
+    protected abstract StringBuilder reateOutputFormatMonthTitle(int month, int year);
 
     private String createMonthTitle(int month, int year) {
         LocalDate dateForTitle = LocalDate.of(year, month, 1);
@@ -51,18 +44,7 @@ public class Calendar {
         return result;
     }
 
-    protected StringBuilder createStringLineForDaysTitle() {
-        StringBuilder result = new StringBuilder();
-        ArrayList<String> daysTitle = createDaysTitle();
-        for (String day :
-                daysTitle) {
-            if (day == daysTitle.get(INDEX_OF_SATURDAY)) {
-                result.append(COLOR_FOR_WEEKENDS);
-            }
-            result.append(String.format("%5s", day));
-        }
-        return result;
-    }
+    protected abstract StringBuilder createOutputFormatDaysTitle();
 
     private ArrayList<String> createDaysTitle() {
         ArrayList<String> result = new ArrayList<>();
@@ -72,52 +54,15 @@ public class Calendar {
         return result;
     }
 
-    protected StringBuilder createStringLineForCalendarData(ArrayList<Integer> data) {
-        String emptySpace = "";
-        String colorForPrinting;
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < data.size(); i++) {
-            colorForPrinting = chooseColorForPrinting(data.get(i));
-            if (colorForPrinting != COLOR_RESET) {
-                result.append(colorForPrinting);
-            }
-            if (data.get(i) == 0) {
-                result.append(String.format("%5s", emptySpace));
-            } else {
-                result.append(String.format("%5d", data.get(i)));
-            }
-            result.append(COLOR_RESET);
-            if (gotoNewLineInTable(i)) {
-                result.append("\n");
-            }
-        }
-        return result;
-    }
+    protected abstract StringBuilder createOutputFormatCalendarData(ArrayList<Integer> data);
 
-    private String chooseColorForPrinting(int valueOfDay) {
-        String result = COLOR_RESET;
-        if (valueOfDay == 0) {
-            return COLOR_RESET;
-        }
-        LocalDate currentDay = LocalDate.of(year, month, valueOfDay);
-        if (currentDay.getDayOfWeek() == DayOfWeek.SATURDAY || currentDay.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            result = COLOR_FOR_WEEKENDS;
-        }
-        if (valueOfDay == dayForTracking) {
-            result = COLOR_FOR_CURRENT_DAY;
-        }
-        return result;
-    }
+    protected abstract String chooseColorForPrinting(int valueOfDay);
 
     private boolean gotoNewLineInTable(int indexOfDay) {
-        return indexOfDay % DAYS_IN_WEAK == 0;
+        if (indexOfDay==0){return false;}
+        return (indexOfDay+1) % DAYS_IN_WEAK == 0;
     }
 
-    public String getOutputCalendar() {
-        String result =
-                createStringLineForMonthTitle(month, year).toString()
-                        + createStringLineForDaysTitle().toString()
-                        + createStringLineForCalendarData(data);
-        return result;
-    }
+
+
 }
